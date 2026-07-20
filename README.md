@@ -127,6 +127,24 @@ Already have a dgVoodoo2 zip? Skip the download:
 .\scripts\Apply-HP1Fix.ps1 -DgVoodooZip 'C:\Downloads\dgVoodoo2_87_3.zip'
 ```
 
+## Optional community mods
+
+Not part of this repo, but they pair well with the fix above and further
+improve the experience — apply them **after** the base fix:
+
+- **Movement & Camera Improvement** by AdamJD —
+  [ModDB](https://www.moddb.com/games/harry-potter-and-the-sorcerers-stone/downloads/hp1-movement-and-camera-improvement).
+  Smoother movement, a better camera, and improved climbing. (Bonus: hold
+  **Space** at the start of a spell-learning cutscene to skip it.) Copy its
+  packages into the game's `System` folder.
+
+- **60 FPS Fix** by Chip-Biscuit —
+  [GitHub](https://github.com/Chip-Biscuit/Harry-Potter-and-the-Philosopher-s-Stone-PC-FPS-Fix).
+  Caps the game at 60 FPS to fix physics/animation glitches caused by modern
+  hardware running the engine too fast. Drop `hp1-60FPSLauncher.exe` next to
+  `HP.exe` and launch through it (the DEP exclusion still applies, since it
+  runs `HP.exe`).
+
 ## Legal
 
 This repository contains **scripts only**. It ships no game files, no dgVoodoo
