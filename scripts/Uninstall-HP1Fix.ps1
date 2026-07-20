@@ -87,18 +87,19 @@ foreach ($f in 'ddfuk.dll','libwine.dll','wined3d.dll') {
     if ($backup -and (Test-Path $backup)) { Copy-Item $backup (Join-Path $sysDir $f) -Force; Write-Ok "restored $f" }
 }
 
-# --- Remove the DEP token -------------------------------------------------
+# --- Remove the DEP token (HKLM = current, HKCU = older versions) ---------
 Write-Step 'Removing DEP exclusion'
-$layers = 'HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers'
-$existing = (Get-ItemProperty -Path $layers -Name $exe -ErrorAction SilentlyContinue).$exe
-if ($existing) {
+foreach ($layers in 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers',
+                    'HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers') {
+    $existing = (Get-ItemProperty -Path $layers -Name $exe -ErrorAction SilentlyContinue).$exe
+    if (-not $existing) { continue }
     $tokens = @($existing -split '\s+' | Where-Object { $_ -and $_ -ne '~' -and $_ -ne 'DisableNXShowUI' })
     if ($tokens.Count -gt 0) {
         New-ItemProperty -Path $layers -Name $exe -Value ((@('~') + $tokens) -join ' ') -PropertyType String -Force | Out-Null
-        Write-Ok "kept other layers: ~ $($tokens -join ' ')"
+        Write-Ok "$($layers.Substring(0,4)) kept other layers: ~ $($tokens -join ' ')"
     } else {
         Remove-ItemProperty -Path $layers -Name $exe -ErrorAction SilentlyContinue
-        Write-Ok 'removed HP.exe compatibility entry'
+        Write-Ok "$($layers.Substring(0,4)) removed HP.exe compatibility entry"
     }
 }
 

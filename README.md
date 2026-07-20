@@ -21,7 +21,7 @@ Two independent problems, both fixed here:
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| **Crash on launch** (`0xc0000005`, WER type `BEX`) right after the 3D init | **DEP** (Data Execution Prevention) kills this Unreal Engine 1 exe during Direct3D init. Reproduces *with or without* dgVoodoo. | A per-user **DEP exclusion** for `HP.exe`. |
+| **Crash on launch** (`0xc0000005`, WER type `BEX`) right after the 3D init | **DEP** (Data Execution Prevention) kills this Unreal Engine 1 exe during Direct3D init. Reproduces *with or without* dgVoodoo. | A machine-wide (`HKLM`) **DEP exclusion** for `HP.exe`. |
 | Black screen / "can't set display mode" / bad rendering | The 2001 **DirectDraw / Direct3D 8** path doesn't work on current GPUs. | **dgVoodoo2** wraps DirectDraw/D3D8 onto modern D3D11/12. |
 | Wants the CD in the drive; won't start | **SafeDisc** copy protection — its driver (`secdrv.sys`) is disabled on modern Windows for security. | The community **no-CD** `HP.exe`. |
 
@@ -68,11 +68,14 @@ Inside the game's `System\` folder:
   `libwine.dll`, `wined3d.dll`) — if you previously tried wined3d, they
   conflict with dgVoodoo and cause a second Direct3D-init crash.
 
-System-wide (per-user, no reboot):
+Machine-wide (no reboot):
 
 - Adds `DisableNXShowUI` to `HP.exe` under
-  `HKCU\…\AppCompatFlags\Layers` — this is the **DEP exclusion** that stops
-  the crash. Any existing flag (e.g. `HIGHDPIAWARE`) is preserved.
+  **`HKLM`**`\…\AppCompatFlags\Layers` — this is the **DEP exclusion** that
+  stops the crash. It must be in `HKLM` (machine-wide): a per-user `HKCU`
+  entry sets the flag but DEP enforcement ignores it, so the game keeps
+  crashing when launched from Explorer. This is the same thing the Windows
+  *System Properties → Performance → DEP* exclusion list writes.
 
 Before touching anything it copies the originals to a timestamped
 `System\_HP1Fix_backup_*` folder, and it logs the whole run to

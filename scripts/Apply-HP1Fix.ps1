@@ -19,7 +19,8 @@
 
     The script self-elevates (UAC) because the game usually lives in
     Program Files. It changes nothing outside the game folder except one
-    per-user compatibility-layer registry value for HP.exe.
+    machine-wide compatibility-layer registry value for HP.exe (the DEP
+    exclusion, which must be in HKLM to be honored by DEP enforcement).
 
 .PARAMETER GamePath
     Root of the installed game (the folder containing 'System\HP.exe').
@@ -199,8 +200,13 @@ try {
     Write-Ok 'Game set to 1024x768 (its engine maximum); dgVoodoo scales it to your screen'
 
     # --- 7. DEP exclusion for HP.exe (the crash fix) ---------------------
+    # MUST be HKLM (machine-wide). DEP enforcement only honors the machine
+    # exclusion list - a per-user HKCU 'DisableNXShowUI' sets the flag but the
+    # kernel ignores it for NX, so the game still crashes (BEX / 0xc0000005)
+    # when launched from Explorer. This is exactly what the System Properties
+    # DEP tab writes, which is why it needs admin (the script self-elevated).
     Write-Step 'Applying DEP exclusion (fixes the startup crash)'
-    $layers = 'HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers'
+    $layers = 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers'
     if (-not (Test-Path $layers)) { New-Item -Path $layers -Force | Out-Null }
     $existing = (Get-ItemProperty -Path $layers -Name $exe -ErrorAction SilentlyContinue).$exe
     $tokens = @()
@@ -208,7 +214,7 @@ try {
     if ($tokens -notcontains 'DisableNXShowUI') { $tokens += 'DisableNXShowUI' }
     $value = (@('~') + $tokens) -join ' '
     New-ItemProperty -Path $layers -Name $exe -Value $value -PropertyType String -Force | Out-Null
-    Write-Ok "Layers: $value"
+    Write-Ok "HKLM Layers: $value"
 
     # --- 8. Clear stale crash-recovery marker ----------------------------
     $running = Join-Path $sysDir 'Running.ini'
