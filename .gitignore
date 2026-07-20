@@ -1,0 +1,10 @@
+# scripts only - never commit game files, wrapper binaries, cracks or discs
+*.iso
+*.exe
+*.dll
+*.conf
+*.zip
+dgVoodoo*
+HP.log
+Running.ini
+_HP1Fix_backup_*/
