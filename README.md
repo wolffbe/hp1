@@ -11,10 +11,6 @@ detects your display, and applies all the fixes.
 🎮 **Game disc image (ISO):**
 https://archive.org/details/harry-potter-and-the-philosophers-stone-windows-pc-uk-harry-potter-1-ps-ibm-pc
 
-💿 **No-CD crack + serial keys:**
-https://archive.org/details/harry-potter-pc-games-no-cd-cracks
-(file `HP.exe` and `hp1-pc-serial-key.txt`)
-
 ## Why it breaks on modern Windows
 
 Two independent problems, both fixed here:
@@ -23,19 +19,20 @@ Two independent problems, both fixed here:
 |---|---|---|
 | **Crash on launch** (`0xc0000005`, WER type `BEX`) right after the 3D init | **DEP** (Data Execution Prevention) kills this Unreal Engine 1 exe during Direct3D init. Reproduces *with or without* dgVoodoo. | A machine-wide (`HKLM`) **DEP exclusion** for `HP.exe`. |
 | Black screen / "can't set display mode" / bad rendering | The 2001 **DirectDraw / Direct3D 8** path doesn't work on current GPUs. | **dgVoodoo2** wraps DirectDraw/D3D8 onto modern D3D11/12. |
-| Wants the CD in the drive; won't start | **SafeDisc** copy protection — its driver (`secdrv.sys`) is disabled on modern Windows for security. | The community **no-CD** `HP.exe`. |
+| Wants the CD in the drive; won't start | **SafeDisc** copy protection — its driver (`secdrv.sys`) is disabled on modern Windows for security. | A **DRM-free `HP.exe`** for the copy you own (out of scope here — see [PCGamingWiki](https://www.pcgamingwiki.com/wiki/Harry_Potter_and_the_Philosopher%27s_Stone)). |
 
 ## How to install
 
 1. **Install the game.** Download the ISO from the link above, mount it
    (double-click the `.iso` on Windows 10/11), run `setup`, and install.
-   When it asks for a **serial key**, use `hp1-pc-serial-key.txt` from the
-   no-CD archive above.
+   When it asks for a **serial key**, use the one that came with your copy.
 
-2. **Apply the no-CD crack.** From the no-CD archive, download the Harry
-   Potter 1 **`HP.exe`** and copy it into the game's `System` folder,
-   replacing the installed one. (This is what lets it start without the disc;
-   SafeDisc no longer works on Windows 10/11.)
+2. **Replace the executable.** The installed `HP.exe` is SafeDisc-protected,
+   and SafeDisc cannot work on Windows 10/11 (its driver was removed for
+   security) — the game will demand the disc and refuse to start. Obtaining a
+   DRM-free `HP.exe` for the copy you own is up to you and out of scope here
+   (see [PCGamingWiki](https://www.pcgamingwiki.com/wiki/Harry_Potter_and_the_Philosopher%27s_Stone));
+   copy it into the game's `System` folder, replacing the installed one.
 
 3. **Run the fix.** Download this repo (green **Code → Download ZIP**, then
    extract), open **PowerShell** in the extracted folder and run:
