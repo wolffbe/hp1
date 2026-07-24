@@ -45,6 +45,8 @@ function Write-Ok  ($m) { Write-Host "    OK  $m" -ForegroundColor Green }
 # --- Locate the game ------------------------------------------------------
 if (-not $GamePath) {
     $candidates = @(
+        "${env:ProgramFiles(x86)}\Electronic Arts\Harry Potter TM",
+        "$env:ProgramFiles\Electronic Arts\Harry Potter TM",
         "${env:ProgramFiles(x86)}\EA Games\Harry Potter TM",
         "$env:ProgramFiles\EA Games\Harry Potter TM",
         "${env:ProgramFiles(x86)}\Harry Potter TM",

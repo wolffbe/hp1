@@ -2,8 +2,8 @@
 
 Gets the 2001 EA game **Harry Potter and the Philosopher's Stone**
 (US title: *Sorcerer's Stone*, `HP.exe`, Unreal Engine 1) running on modern
-**Windows 10 & 11**, where it otherwise **crashes on startup** — you see the
-publisher splash / dgVoodoo watermark for a second and then it dies to desktop.
+**Windows 10 & 11**, where it otherwise **crashes on startup** — the game
+window appears for a second and then it dies to desktop.
 
 One PowerShell script does everything: it downloads the latest **dgVoodoo2**,
 detects your display, and applies all the fixes.
@@ -127,10 +127,11 @@ Already have a dgVoodoo2 zip? Skip the download:
 .\scripts\Apply-HP1Fix.ps1 -DgVoodooZip 'C:\Downloads\dgVoodoo2_87_3.zip'
 ```
 
-## Optional community mods
+## Recommended additional fixes
 
-Not part of this repo, but they pair well with the fix above and further
-improve the experience — apply them **after** the base fix:
+Not part of this repo, but this is good additional work that pairs well with
+the fix above and further improves the experience — apply it **after** the
+base fix:
 
 - **Movement & Camera Improvement** by AdamJD —
   [ModDB](https://www.moddb.com/games/harry-potter-and-the-sorcerers-stone/downloads/hp1-movement-and-camera-improvement).
